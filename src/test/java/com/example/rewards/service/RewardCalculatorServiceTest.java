@@ -51,4 +51,43 @@ class RewardCalculatorServiceTest {
 
     }
 
+    @Test
+    public void test_buildAndGetRewardOfCustomer() {
+
+        List<Transaction> transactionList = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+
+
+        Transaction t1 = new Transaction();
+        t1.setCustomerId(1L);
+        t1.setTransactionAmount(110);
+        t1.setId(1L);
+        t1.setTransactionDate(Timestamp.valueOf(now));
+
+        transactionList.add(t1);
+
+        when(transactionRepository.findAllCustomerTransactionsByDate(anyLong(), anyInt(), anyInt())).thenReturn(transactionList);
+
+        CustomerRewardDTO rewards = rewardCalculatorService.getRewardsForCustomerId(1L);
+        assertThat(rewards).isNotNull();
+
+        //70+70+70
+        assertThat(rewards.getTotalReward()).isEqualTo(210L);
+
+    }
+
+    @Test
+    public void test_buildAndGetRewardForCustomerWithNoTransactions() {
+        List<Transaction> transactionList = new ArrayList<>();
+
+        when(transactionRepository.findAllCustomerTransactionsByDate(anyLong(), anyInt(), anyInt())).thenReturn(transactionList);
+
+        CustomerRewardDTO rewards = rewardCalculatorService.getRewardsForCustomerId(1L);
+        assertThat(rewards).isNotNull();
+
+        //0+0+0
+        assertThat(rewards.getTotalReward()).isEqualTo(0L);
+
+    }
+
 }

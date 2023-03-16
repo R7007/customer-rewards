@@ -16,6 +16,12 @@ public class CustomerRewardController {
     @Autowired
     private RewardCalculatorService rewardCalculatorService;
 
+    /**
+     * Computes the Rewards for a given customer
+     * @param customerId Customer Id
+     * @return Reward Info for last three months and total rewards
+     */
+
     @GetMapping("/{customerId}")
     public ResponseEntity<CustomerRewardDTO> getRewardsForCustomerId(@PathVariable Long customerId) {
         CustomerRewardDTO rewards = rewardCalculatorService.getRewardsForCustomerId(customerId);
