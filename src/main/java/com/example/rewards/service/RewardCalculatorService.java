@@ -15,8 +15,8 @@ public class RewardCalculatorService {
 
     public static final int LEVEL1_SPENT = 50;
     public static final int LEVEL2_SPENT = 100;
-    public static final int LEVEL1_SPENT_POINT = 1;
-    public static final int LEVEL2_SPENT_POINT = 2;
+    public static final int BETWEEN_50_100_POINTS = 1;
+    public static final int OVER_100_POINTS = 2;
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -50,10 +50,10 @@ public class RewardCalculatorService {
     private Long calculateRewardsOfTransaction(Transaction txn) {
         double transactionAmount = txn.getTransactionAmount();
         if (transactionAmount > LEVEL1_SPENT && transactionAmount < LEVEL2_SPENT)
-            return Math.round(transactionAmount - LEVEL1_SPENT) * LEVEL1_SPENT_POINT;
+            return Math.round(transactionAmount - LEVEL1_SPENT) * BETWEEN_50_100_POINTS;
         else if (transactionAmount > LEVEL2_SPENT)
-            return Math.round(transactionAmount - LEVEL2_SPENT) * LEVEL2_SPENT_POINT
-                    + (LEVEL2_SPENT - LEVEL1_SPENT) * LEVEL1_SPENT_POINT;
+            return Math.round(transactionAmount - LEVEL2_SPENT) * OVER_100_POINTS
+                    + (LEVEL2_SPENT - LEVEL1_SPENT) * BETWEEN_50_100_POINTS;
         else
             return 0L;
     }
